@@ -191,7 +191,7 @@ class Authentication
         // Get LDAP and TYPO3 user groups for user
         // First reset the LDAP groups
         static::$ldapGroups = null;
-        $typo3_groups = static::getUserGroups($ldapUser);
+        $typo3_groups = static::getUserGroups($ldapUser,null,'fe_groups');
         if ($typo3_groups === null) {
             // Required LDAP groups are missing
             static::$lastAuthenticationDiagnostic = 'Missing required LDAP groups.';
@@ -243,6 +243,7 @@ class Authentication
             }
             // Set groups to user.
             $groupTable = static::$authenticationService->authInfo['db_groups']['table'];
+            $groupTable = 'fe_groups';
             $typo3_user = Typo3UserRepository::setUserGroups($typo3_user, $typo3_groups, $groupTable);
             // Merge LDAP user with TYPO3 user from mapping.
             if ($typo3_user) {
